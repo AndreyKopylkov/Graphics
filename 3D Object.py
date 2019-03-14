@@ -117,3 +117,4 @@ def show_face(angle):
     screen.img.show()
 
 show_face(45)
+
