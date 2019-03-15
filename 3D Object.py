@@ -11,6 +11,9 @@ scr_x = 800  # Ширина картинки
 scr_y = scr_x  # Высота картинки
 
 bg = (0, 0, 0)
+spinAngle = 0
+mousePos = (0, 0)
+mouseDown = False
 screen = pygame.display.set_mode((scr_x, scr_y))
 time = pygame.time.Clock()
 pygame.display.set_caption("3D Face")
@@ -18,7 +21,6 @@ def drawWindow():
     global animCount
     pygame.display.update()
 run = True
-
     #подгрузка фона и анимации
 def drawWindow():
     global animCount
@@ -30,8 +32,15 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if event.type == pygame.KEYDOWN:
+            if pygame.key == pygame.K_RIGHT:
+                spinAngle += 30
+
         if event.type == pygame.MOUSEBUTTONDOWN:
-            mouseDown = True
+            if pygame.mouse.get_pressed()[2]:
+                mousePos = pygame.mouse.get_pos()
+                mouseDown = True
+
         if event.type == pygame.MOUSEBUTTONUP:
             mouseDown = False
 
@@ -150,13 +159,17 @@ while run:
                 screen.triangle(tr_points, texture)
         screen.img.save("C:\Programming\Graphics\img_face.bmp")
 
-
-    show_face(45)
+    if mousePos > (0, scr_y/2) and mouseDown:
+        spinAngle += 1
+    if mousePos < (0, scr_y/2) and mouseDown:
+        spinAngle -= 1
+    show_face(spinAngle)
     picture = pygame.image.load("C:\Programming\Graphics\img_face.bmp")
     # Рисуем на экране изображение
-    screen.blit(picture, (0, 10))
+    screen.blit(screen, (0, 10))
     pygame.display.update()
     screen.fill(bg)
+    print(spinAngle)
     time.tick(30)
 
 pygame.quit()
